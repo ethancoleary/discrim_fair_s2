@@ -1,0 +1,73 @@
+{{ block title }}
+    Survey
+{{ endblock }}
+
+{{ block content }}
+<div style="display: flex; justify-content: center; margin-bottom: 18px;">
+  <div style="width: 60%; background: #eee; border-radius: 6px; height: 24px;">
+    <div style="width: {{ progress }}%; background: #3b82f6; height: 24px; border-radius: 6px; transition: width 0.2s;">
+      <span style="color: black; font-weight: bold; padding-left: 10px;">{{ progress }}%</span>
+    </div>
+  </div>
+</div>
+
+<p>
+To what extent do you consider how the budget allocation was decided <b>justified for maximizing earnings</b>?<br><br></p>
+<div>
+<table style="width:100%; text-align:center; border-collapse: collapse;">
+        <tr>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Very unjustified</th>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Somewhat unjustified</th>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Neither unjustified nor justified</th>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Somewhat justified</th>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Very justified</th>
+    </tr>
+    <tr>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="allocation_eff"
+               value=1
+               id="allocation_eff_1"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="allocation_eff"
+               value=2
+               id="allocation_eff_2"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="allocation_eff"
+               value=3
+               id="allocation_eff_3"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="allocation_eff"
+               value=4
+               id="allocation_eff_4"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="allocation_eff"
+               value=5
+               id="allocation_eff_5"
+               >
+      </td>
+    </tr>
+
+</table>
+    </div>
+<br><br>
+  <center>
+    {{ next_button }}
+  </center>
+
+</form>
+{{ endblock }}
+
+

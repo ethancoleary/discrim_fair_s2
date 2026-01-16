@@ -1,0 +1,93 @@
+{{ block title }}
+    Survey
+{{ endblock }}
+
+{{ block content }}
+<div style="display: flex; justify-content: center; margin-bottom: 18px;">
+  <div style="width: 60%; background: #eee; border-radius: 6px; height: 24px;">
+    <div style="width: {{ progress }}%; background: #3b82f6; height: 24px; border-radius: 6px; transition: width 0.2s;">
+      <span style="color: black; font-weight: bold; padding-left: 10px;">{{ progress }}%</span>
+    </div>
+  </div>
+</div>
+</div>
+<form method="post">
+
+  <p>
+    Do you think you have ever been subjected to discrimination <b>during your education?</b>
+    That is, do you think that you were treated differently (positively or negatively) because of some characteristic like your race, age, gender, disability status, religion etc.
+    rather than because of your ability?<br><br>
+    {{ form.discrim_educ }}
+  </p>
+
+  <div id="educ_followup" style="display:none;">
+    <p>
+      In that case, based on which of the following do you think that you were treated differently during your education? (Select all that apply) <br><br>
+      <div>
+        <input type="checkbox" id="educ_age" value=1 name="discrim_educ_identity_age" />
+        <label for="educ_age">Age</label>
+      </div>
+      <div>
+        <input type="checkbox" id="educ_gender" value=1 name="discrim_educ_identity_gender" />
+        <label for="educ_gender">Gender</label>
+      </div>
+      <div>
+        <input type="checkbox" id="educ_race" value=1 name="discrim_educ_identity_race" />
+        <label for="educ_race">Race/Ethnicity</label>
+      </div>
+      <div>
+        <input type="checkbox" id="educ_religion" value=1 name="discrim_educ_identity_religion" />
+        <label for="educ_religion">Religion</label>
+      </div>
+      <div>
+        <input type="checkbox" id="educ_disability" value=1 name="discrim_educ_identity_disability" />
+        <label for="educ_disability">Disability</label>
+      </div>
+      <div>
+        <input type="checkbox" id="educ_sex" value=1 name="discrim_educ_identity_sex" />
+        <label for="educ_sex">Sexual Orientation</label>
+      </div>
+      <div>
+        <input type="checkbox" id="educ_other" value=1 name="discrim_educ_identity_other" />
+        <label for="educ_other">Other</label>
+      </div>
+    </p>
+
+    <p>
+      Do you think you were treated better or worse during your education because of these?<br><br>
+      {{ form.discrim_educ_pref }}
+    </p>
+  </div>
+
+  <center>
+    {{ next_button }}
+  </center>
+</form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let educInputs = document.querySelectorAll('input[name="discrim_educ"]');
+    let educFollowupDiv = document.getElementById('educ_followup');
+
+    function toggleEducFollowup() {
+      let selectedValue = Array.from(educInputs).find(input => input.checked)?.value;
+      if (selectedValue === '1') {
+        educFollowupDiv.style.display = 'block';
+      } else {
+        educFollowupDiv.style.display = 'none';
+        educFollowupDiv.querySelectorAll('input[type=checkbox], input[type=radio]').forEach(input => input.checked = false);
+        let select = educFollowupDiv.querySelector('select[name="discrim_educ_pref"]');
+        if (select) select.selectedIndex = 0;
+        let textInput = educFollowupDiv.querySelector('input[name="discrim_educ_pref"]');
+        if (textInput) textInput.value = '';
+      }
+    }
+
+    educInputs.forEach(input => {
+      input.addEventListener('change', toggleEducFollowup);
+    });
+
+    toggleEducFollowup();
+  });
+</script>
+{{ endblock }}

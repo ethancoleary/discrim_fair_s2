@@ -1,0 +1,75 @@
+{{ block title }}
+    Survey
+{{ endblock }}
+
+{{ block content }}
+<div style="display: flex; justify-content: center; margin-bottom: 18px;">
+  <div style="width: 60%; background: #eee; border-radius: 6px; height: 24px;">
+    <div style="width: {{ progress }}%; background: #3b82f6; height: 24px; border-radius: 6px; transition: width 0.2s;">
+      <span style="color: black; font-weight: bold; padding-left: 10px;">{{ progress }}%</span>
+    </div>
+  </div>
+</div>
+
+<p>
+To what extent do you consider how the budget allocation was decided <b>fair</b>?<br><br></p>
+<div>
+    <form method="post">
+<table style="width:100%; text-align:center; border-collapse: collapse;">
+        <tr>
+        <th style="border: 1px solid black; padding: 8px; width: 20%;">Very Unfair</th>
+        <th style="border: 1px solid black; padding: 8px; width: 20%;">Somewhat Unfair</th>
+        <th style="border: 1px solid black; padding: 8px; width: 20%;">Neither Unfair nor Fair</th>
+        <th style="border: 1px solid black; padding: 8px; width: 20%;">Somewhat Fair</th>
+        <th style="border: 1px solid black; padding: 8px; width: 20%;">Very Fair</th>
+    </tr>
+    <tr>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="allocation_fair"
+               value=1
+               id="allocation_fair_1"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="allocation_fair"
+               value=2
+               id="allocation_fair_2"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="allocation_fair"
+               value=3
+               id="allocation_fair_3"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="allocation_fair"
+               value=4
+               id="allocation_fair_4"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="allocation_fair"
+               value=5
+               id="allocation_fair_5"
+               >
+      </td>
+    </tr>
+
+</table>
+    </div>
+</form>
+<br><br>
+  <center>
+    {{ next_button }}
+  </center>
+
+
+{{ endblock }}
+
+

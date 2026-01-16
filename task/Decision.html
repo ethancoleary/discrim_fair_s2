@@ -1,0 +1,106 @@
+{{ block title }}
+Before your investment decision...
+{{ endblock }}
+{{ block content }}
+<style>
+    .allocation-table {
+      width: 80%;
+      margin: 0 auto;
+      border-collapse: separate;
+      border-spacing: 24px 0px; /* horizontal gap:30px, vertical gap:10px */
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      text-align: center;
+    }
+    .allocation-table td, .allocation-table th {
+      padding: 2px 10px;
+      border: 1px solid #cccccc;
+    }
+
+    /* Remove borders in the bottom row */
+    .allocation-table tbody tr:nth-child(4) td {
+      border: none;
+    }
+    .allocation-table tbody tr:nth-child(1) td {
+      border: none;
+    }
+    /* Center buttons */
+    .allocation-table tbody tr:last-child td {
+      text-align: center;
+    }
+    .allocation-table button {
+      background-color: #4a90e2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .allocation-table button:hover {
+      background-color: #357abd;
+    }
+  </style>
+<h4>Opportunity: Change allocation of extra participation fees</h4>
+<p>
+You received <b>100 tokens as an investment budget</b> while your match received 300 tokens.
+  However, <b>you both received $0.50</b> extra participation fee.
+</p>
+<p>
+  You now have the opportunity to <b>change the allocation of extra participation fees</b>.
+  Your match does not have this choice, cannot block your decision,
+  and will not learn about your decision until after the experiment is completed.<br><br>
+  Recall that the extra participation fees do not influence neither your investment budgets nor investment outcomes.
+  Your chosen allocation of extra participation fees will be paid out to you and your match after the experiment.
+</p><br>
+<h4>Decision: Allocation of extra participation fees</h4>
+
+<p>
+  You can <b>transfer your match's extra participation fee to yourself</b>.
+  This transfer would incur a cost of $0.25, leaving you with $0.75 and your match with $0.00.
+</p>
+<p>
+  Choose one of the following allocations of the extra participation fees:
+</p>
+<center>
+<form method="post" name="taskForm">
+  <table class="allocation-table">
+    <tbody>
+    <tr>
+      <td></td>
+      <td><b>Original Allocation</b></td>
+      <td><b>Amended Allocation</b></td>
+    </tr>
+      <tr>
+        <td style="text-align: left";><b>You</b></td>
+        <td>$0.50</td>
+        <td>$0.75</td>
+      </tr>
+      <tr>
+        <td style="text-align: left";><b>Your match</b></td>
+        <td>$0.50</td>
+        <td>$0.00</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <button type="submit" name="transfer" value="0">
+            Choose this allocation
+          </button>
+        </td>
+        <td>
+          <button type="submit" name="transfer" value="1">
+            Choose this allocation
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+  </center>
+
+
+<br><br>
+
+
+{{ endblock }}

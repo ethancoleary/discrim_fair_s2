@@ -1,0 +1,52 @@
+{{ block title }}
+Please answer the following questions to ensure your understanding of the stage
+{{ endblock }}
+{{ block content }}
+<p>
+    Recall that by answering all questions correctly, you will earn $0.50 additional participation fee.
+You will be unable to pass to the next page until you answer all of the questions correctly.
+</p>
+<p>
+    <i>If you make a mistake, then you will receive a hint.
+    You will see one hint at a time: that for your first incorrect answer.</i>
+</p><br>
+<p>
+1. If you receive 100 tokens as an investment budget, how many tokens will your match receive?
+</p>
+<p>
+<center>
+
+        {{ form.check1 }}
+
+    </center>
+</p>
+<p>
+    2. What is the probability that an investment is successful?
+</p>
+<p>
+
+
+        {{ form.check2 }}
+
+</p>
+<p>
+    3. How are investment budgets allocated?
+</p>
+<p>
+
+
+        {{ form.check3 }}
+
+
+</p>
+<p>
+    4. You will earn $0.50 from answering these questions correctly. What will happen to this sum?
+</p>
+<p>
+
+
+        {{ form.check4 }}
+
+</p>
+    {{ next_button }}
+{{ endblock }}

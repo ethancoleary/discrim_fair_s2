@@ -1,0 +1,61 @@
+{{ block title }}
+    Instructions (2/3)
+{{ endblock }}
+{{ block content }}
+<p>
+    <h4>Allocation of Investment Budgets</h4>
+Either you or your match will receive a budget of 300 tokens and the other will receive 100 tokens.
+<br><br>
+<p>
+{{ if player.participant.treatment == 1 }}
+One of the paintings (A or B) will be randomly selected.
+The 300 token budget will be allocated to the individual (you or your match) who chose the selected painting.
+The individual who chose the other painting will receive a budget of 100 tokens.
+{{ endif }}
+
+{{ if player.participant.treatment == 2 }}
+The 300 token budget will be allocated to the individual who belongs to the group that,
+on average, invested the most tokens in a previous study.
+<br><br>
+In the previous study, individuals were assigned to either group A or group B according to their preferred painting.
+They then made an investment decision in the same lottery as you will.
+{{ endif }}
+
+{{ if player.participant.treatment == 3 }}
+A real participant recruited from Prolific (the decision maker) will decide on the allocation of budgets.
+The decision maker is financially incentivized to allocate the 300 token budget to the individual they predict will invest more tokens.
+To make this prediction, the decision maker is shown the average investments of group A and group B in a previous study.
+<br><br>
+In the previous study, individuals were assigned to either group A or group B according to their preferred painting.
+They then made an investment decision in the same lottery as you will.
+{{ endif }}
+
+{{ if player.participant.treatment == 4 }}
+ One of the gender groups (male or female) will be randomly selected.
+The 300 token budget will be allocated to the individual (you or your match) who belongs to the selected group.
+The individual belonging to the other group will receive a budget of 100 tokens.
+{{ endif }}
+
+{{ if player.participant.treatment == 5 }}
+A real participant recruited from Prolific (the decision maker) will decide on the allocation of budgets.
+The decision maker is financially incentivized to allocate the 300 token budget to the individual they predict will invest more tokens.
+To make this prediction, the decision maker is shown the average investments of a male group and a female group in a previous study.
+<br><br>
+The male and female groups were labelled as group A and group B respectively to the decision maker.
+<strong>Therefore, they were not aware that these groups corresponded to gender.</strong>
+{{ endif }}
+</p>
+<p>
+    <h4>Next Steps</h4>
+    Before moving on to the last page of instructions and learning how many tokens you have been allocated,
+    you must answer the following questions to check your understanding of the instructions up to now.
+    <strong>You will earn $0.50 by answering these questions correctly.</strong>
+</p>
+<p>
+This $0.50 is an <strong>extra participation fee</strong> and is not added to your investment budget.
+    This extra participation fee may be affected by the decisions of yourself or your match later in the experiment.
+</p>
+<br>
+    {{ next_button }}
+
+{{ endblock }}

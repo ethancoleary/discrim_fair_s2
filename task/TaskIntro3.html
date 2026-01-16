@@ -1,0 +1,46 @@
+{{ block title }}
+    Instructions (3/3)
+{{ endblock }}
+
+{{ block content }}
+<p>
+    Thank you for answering the questions. An extra participation fee of $0.50 has been credited to you.
+</p><br>
+<p>
+    <h4>Final allocation of investment budgets</h4>
+{{ if player.treatment == 1 }}
+
+ The random gender group selected was the {{ if player.chosen == 1 and player.participant.group == 1 }}male{{ endif }}
+                                       {{ if player.chosen == 1 and player.participant.group == 2 }}female{{ endif }}
+                                       {{ if player.chosen == 0 and player.participant.group == 1 }}female{{ endif }}
+                                       {{ if player.chosen == 0 and player.participant.group == 2 }}male{{ endif }}
+                                        group.
+                                       Since you are{{ if player.participant.group == 2 }}fe{{endif}}male and your match is {{ if player.participant.group == 1 }}fe{{endif}}male,
+                                       you will receive an investment budget of {{ yourbudget }} tokens and your
+                                       match will receive {{ partnerbudget }} tokens.
+</p>
+{{ endif }}
+{{ if player.treatment > 1 }}
+<p>
+In the previous study, males invested substantially more of their budget than females.
+    </p>
+{{ endif }}
+{{ if player.treatment == 3 }}
+<p>
+    The decision maker chose to allocate the 300 token budget to the individual from the {{ chosen }} group.
+    </p>
+{{ endif }}
+{{ if player.treatment > 1 }}
+<p>
+    Since you belong to the {{ yourgender }} group and your match belongs to {{ partnergender }} group,
+you will receive an investment budget of {{ yourbudget }} tokens and your match will receive {{ partnerbudget }} tokens.
+</p>
+{{ endif }}
+
+<p>
+    Click 'next' to move forward.
+</p>
+{{ next_button }}
+{{ endblock }}
+
+

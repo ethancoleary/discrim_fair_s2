@@ -1,0 +1,59 @@
+{{ block title }}
+
+{{ endblock }}
+
+{{ block content }}
+<div style="display: flex; justify-content: center; margin-bottom: 18px;">
+  <div style="width: 60%; background: #eee; border-radius: 6px; height: 24px;">
+    <div style="width: {{ progress }}%; background: #3b82f6; height: 24px; border-radius: 6px; transition: width 0.2s;">
+      <span style="color: black; font-weight: bold; padding-left: 10px;">{{ progress }}%</span>
+    </div>
+  </div>
+</div>
+</div>
+<p>
+In your opinion, is there too little, too much, or an acceptable level of <b>representation
+of minorities</b> in leadership positions in the United States today?<br><br></p>
+<div>
+<table style="width:100%; text-align:center; border-collapse: collapse;">
+        <tr>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Too little representation</th>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Acceptable representation</th>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Too much representation</th>
+    </tr>
+    <tr>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="representation"
+               value=1
+               id="representation_1"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="representation"
+               value=2
+               id="representation_2"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="representation"
+               value=3
+               id="representation_3"
+               >
+      </td>
+      </td>
+    </tr>
+
+</table>
+    </div>
+<br><br>
+  <center>
+    {{ next_button }}
+  </center>
+
+</form>
+{{ endblock }}
+
+

@@ -1,0 +1,55 @@
+{{ block title }}
+    Survey
+{{ endblock }}
+
+{{ block content }}
+<div style="display: flex; justify-content: center; margin-bottom: 18px;">
+  <div style="width: 60%; background: #eee; border-radius: 6px; height: 24px;">
+    <div style="width: {{ progress }}%; background: #3b82f6; height: 24px; border-radius: 6px; transition: width 0.2s;">
+      <span style="color: black; font-weight: bold; padding-left: 10px;">{{ progress }}%</span>
+    </div>
+  </div>
+</div>
+
+<p>
+While you were given an investment budget of 100 tokens, you could have been allocated 300 tokens.</p>
+
+<p>
+    How many tokens do you think you would have invested had you been allocated 300 tokens?
+</p>
+<center>
+<form method="post">
+  <label for="invest_if_300">Enter investment amount (0 to 300):</label><br><br>
+  <input type="number" id="invest_if_300" name="invest_if_300" style="width:80px;"
+         min="0" max="300" step="1" required>
+  <br><br>
+</form>
+  </center>
+<br><br>
+  <center>
+    {{ next_button }}
+  </center>
+
+
+
+
+<script>
+  const form = document.querySelector('form');
+  const input = document.getElementById('invest_if_300');
+
+  form.addEventListener('submit', function(event) {
+    const val = Number(input.value);
+    if (!input.value) {
+      alert('Please enter a value.');
+      event.preventDefault();
+      return;
+    }
+    if (!Number.isInteger(val) || val < 0 || val > 300) {
+      alert('Please enter an integer between 0 and 100.');
+      event.preventDefault();
+      return;
+    }
+  });
+</script>
+
+{{ endblock }}

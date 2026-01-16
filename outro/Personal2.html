@@ -1,0 +1,22 @@
+{{ block title }}
+    Survey
+{{ endblock }}
+
+{{ block content }}
+<div style="display: flex; justify-content: center; margin-bottom: 18px;">
+  <div style="width: 60%; background: #eee; border-radius: 6px; height: 24px;">
+    <div style="width: {{ progress }}%; background: #3b82f6; height: 24px; border-radius: 6px; transition: width 0.2s;">
+      <span style="color: black; font-weight: bold; padding-left: 10px;">{{ progress }}%</span>
+    </div>
+  </div>
+</div>
+</div>
+<p>Have you every taken an economics class?
+  {{ form.education_economics }}
+</p>
+<center>
+        {{ next_button }}
+</center>
+{{ endblock }}
+
+

@@ -1,0 +1,31 @@
+{{ block title }}
+    Survey
+{{ endblock }}
+
+{{ block content }}
+
+<div style="display: flex; justify-content: center; margin-bottom: 18px;">
+  <div style="width: 60%; background: #eee; border-radius: 6px; height: 24px;">
+    <div style="width: {{ progress }}%; background: #3b82f6; height: 24px; border-radius: 6px; transition: width 0.2s;">
+      <span style="color: black; font-weight: bold; padding-left: 10px;">{{ progress }}%</span>
+    </div>
+  </div>
+</div>
+</div>
+<p>This is the final section of the experiment. We ask you to complete the following survey.
+  It will take you approximately 2-5 minutes to complete.
+  You may see your progress through the survey via the progress bar above.</p>
+<br><br>
+<p>
+During this experiment, you were matched with another participant and each of you were assigned an investment budget.
+  To the best of your memory, please describe why you were allocated your personal investment budget.<br><br>
+  {{ form.reason }}
+</p>
+  <center>
+    {{ next_button }}
+  </center>
+
+</form>
+{{ endblock }}
+
+

@@ -1,0 +1,97 @@
+{{ block title }}
+    Investment Decosopm
+{{ endblock }}
+
+{{ block content }}
+<style>
+    #lotteryContainer {
+    background-color: #f5f7fa;
+    border: 2px solid #d1d9e6;
+    border-radius: 12px;
+    padding: 20px 20px;
+    margin: 0 auto 30px auto;
+    width: 75%;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+</style>
+You have now received 200 tokens.
+<b>How many of these tokens would you like to invest in the following lottery?</b>
+<br><br>
+<div id="lotteryContainer">
+    <u><strong>Lottery</strong></u><br>
+    <i>A fair six-sided die will be rolled. If the die lands on a 1 or a 2, you will
+    win two and half times the amount you invest.
+    If the die lands on a number higher than 2 (3, 4, 5 or 6), you will
+    lose the amount you invest.</i>
+</div>
+<br>
+Recall that the tokens you do not invest are yours to keep on top of the earnings from your
+investment in the lottery.
+<br><br>
+<center>
+
+    <form id="investment_form" method="post">
+        <input
+            type="number"
+            id="tokens_input"
+            name="investment"
+            min="0"
+            max="200"
+            step="1"
+            style="width:80px;"
+            autocomplete="off"
+            required
+        >
+        <br><br>
+        <div id="dynamic_message" style="font-weight:normal; color: #333;"></div>
+        <div id="error_message" style="color: red; font-weight: bold; margin-top:10px;"></div>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</center>
+
+<script>
+const input = document.getElementById('tokens_input');
+const dynamicDiv = document.getElementById('dynamic_message');
+const errorDiv = document.getElementById('error_message');
+const form = document.getElementById('investment_form');
+
+input.addEventListener('input', function() {
+    errorDiv.textContent = '';
+    let invested = Number(this.value);
+    if (
+        Number.isInteger(invested) &&
+        invested >= 0 &&
+        invested <= 200
+    ) {
+        let uninvested = 200 - invested;
+        let bonusAmount = uninvested + Math.ceil(2.5 * invested);
+        dynamicDiv.textContent =
+            "You have a 2/6 chance of receiving a bonus equal to " + bonusAmount + " tokens and a 4/6 chance of receiving a bonus equal to " + uninvested + " tokens.";
+    } else {
+        dynamicDiv.textContent = '';
+    }
+});
+
+form.addEventListener('submit', function(event) {
+    let value = input.value;
+    if (
+        !value ||
+        !/^\d+$/.test(value) ||
+        Number(value) < 0 ||
+        Number(value) > 200
+    ) {
+        errorDiv.textContent = 'Please type in a whole number between 0 and 200';
+        event.preventDefault();
+    } else {
+        errorDiv.textContent = '';
+    }
+});
+</script>
+</center>
+
+{{ endblock }}
+
+

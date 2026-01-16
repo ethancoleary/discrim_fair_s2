@@ -1,0 +1,279 @@
+{{ block title }}
+    Your Task
+{{ endblock }}
+{{ block content }}
+
+<style>
+  /* Container for the slider section with shaded background */
+  #sliderContainer {
+    background-color: #f5f7fa;
+    border: 2px solid #d1d9e6;
+    border-radius: 12px;
+    padding: 30px 40px;
+    margin: 0 auto 30px auto;
+    width: 75%;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+  }
+
+  /* Center the slider container and label */
+  #investmentSlider, label {
+    display: block;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  /* Bulkier slider styling */
+  #investmentSlider {
+    width: 70%;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    height: 20px;
+    border-radius: 12px;
+    -webkit-appearance: none;
+    background: linear-gradient(to right, #dce7f4, #b8d0ed);
+    cursor: pointer;
+    outline: none;
+  }
+
+  /* Bulky slider thumb */
+  #investmentSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 35px;
+    height: 35px;
+    background: #4a90e2;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid #2c5aa0;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+  }
+
+  #investmentSlider::-moz-range-thumb {
+    width: 35px;
+    height: 35px;
+    background: #4a90e2;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid #2c5aa0;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+  }
+
+  /* Initially hidden slider text */
+  #sliderText {
+    display: none;
+    margin-top: 15px;
+  }
+
+  /* Dropdown button styling */
+  #dropdownButton {
+    background-color: #4a90e2;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 25px;
+    cursor: pointer;
+    margin: 20px auto;
+    display: block;
+    transition: background-color 0.3s ease;
+  }
+
+   #lotteryContainer {
+    background-color: #f5f7fa;
+    border: 2px solid #d1d9e6;
+    border-radius: 12px;
+    padding: 20px 20px;
+    margin: 0 auto 30px auto;
+    width: 75%;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+
+  #dropdownButton:hover {
+    background-color: #357abd;
+  }
+
+  /* Dropdown content - initially hidden */
+  #investmentInfo {
+    display: none;
+    background-color: #ffffff;
+    border: 1px solid #d1d9e6;
+    border-radius: 8px;
+    padding: 20px 25px;
+    margin: 15px auto;
+    width: 75%;
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.08);
+  }
+
+  /* Style the table for spaciousness and readability */
+  #investmentInfo table {
+    width: 100%;
+    margin: 0 auto 20px auto;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+  }
+
+  #investmentInfo th, #investmentInfo td {
+    padding: 15px 20px;
+    border: 1px solid #cccccc;
+  }
+
+  #investmentInfo thead th {
+    background-color: #e8f0f8;
+    font-weight: bold;
+  }
+
+  /* Paragraph and info area center alignment */
+  #investmentInfo p {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+</style>
+
+Now you must complete a task which will determine your bonus payment.
+<br><br>
+
+<h4>Investment Instructions</h4>
+For this task, you will be given 200 tokens, each worth 1 cent.
+You must decide how many of your tokens to invest in the following lottery.
+<br><br>
+
+<center>
+<div id="lotteryContainer">
+    <u><strong>Lottery</strong></u><br>
+    <i>A fair six-sided die will be rolled. If the die lands on a 1 or a 2, you will
+    win two and half times the amount you invest.
+    If the die lands on a number higher than 2 (3, 4, 5 or 6), you will
+    lose the amount you invest.</i>
+</div>
+</center>
+
+Your bonus payment will be equal to the dollar worth of the tokens you do not invest
+    plus any earnings from the lottery.
+<br><br><br>
+<h4>Example</h4>
+You may use the tool below to explore the possible earnings and their probabilities from different investment amounts.
+<br><br>
+
+<center>
+<div id="sliderContainer">
+  <label for="investmentSlider"><i>Select your investment amount (0 to 200):</i></label>
+  <br>
+  <input type="range" id="investmentSlider" min="0" max="200" value="0" step="1" oninput="updateDisplay(value)">
+
+  <!-- Hidden form field to record the slider value -->
+  <input type="hidden" name="slider_value" id="sliderValueField" value="0">
+
+  <div id="sliderText">
+    If you invest <span id="sliderValue" style="font-size: 22px; font-weight: bold; color: #2c5aa0;"></span> tokens
+    in the lottery, you could earn
+    <span id="totalbonusHigh" style="font-size: 22px; font-weight: bold; color: #2c5aa0;"></span> tokens with <span style="font-size: 22px; font-weight: bold; color: #2c5aa0;">2/6</span> probability
+    and <span id="totalbonusLow" style="font-size: 22px; font-weight: bold; color: #2c5aa0;"></span> tokens with <span style="font-size: 22px; font-weight: bold; color: #2c5aa0;">4/6</span> probability.
+  </div>
+</div>
+
+<button id="dropdownButton" type="button" onclick="toggleDropdown()">
+  Show Possible Bonus Breakdown ▼
+</button>
+
+<div id="investmentInfo">
+  <p>If you invest <span id="investX">0</span> tokens in the lottery, your bonus payments could comprise the following:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Die lands on</th><th>1 or 2</th><th>3, 4, 5 or 6</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+         <td>Probability</td><td>2/6</td><td>4/6</td>
+    </tr>
+      <tr>
+        <td>Lottery earning</td><td id="lotteryEarnHigh">0</td><td id="lotteryEarnLow">0</td>
+      </tr>
+      <tr>
+        <td>Uninvested tokens</td><td id="uninvLeft1">200</td><td id="uninvLeft2">200</td>
+      </tr>
+      <tr>
+        <td>Total Bonus</td><td id="totalBonusHigh">200</td><td id="totalBonusLow">200</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</center>
+
+<br><br>
+In the next page you must decide how many of your tokens to invest.
+<br><br>
+    {{ next_button }}
+
+<script type="text/javascript">
+var sliderMoved = false;
+
+function updateDisplay(x) {
+  var xInt = parseInt(x, 10);
+
+  // Update the hidden form field to record the slider value
+  document.getElementById('sliderValueField').value = xInt;
+
+  // Show the slider text only after the slider has been moved
+  if (!sliderMoved) {
+    sliderMoved = true;
+    document.getElementById('sliderText').style.display = 'block';
+  }
+
+  document.getElementById('sliderValue').textContent = xInt;
+  document.getElementById('investX').textContent = xInt;
+
+  // Calculate values - round up using Math.ceil for any decimal results
+  var lotteryHigh = Math.ceil(2.5 * xInt);
+  var lotteryLow = 0; // Always 0 for Case 2
+  var uninv = 200 - xInt;
+  var totalHigh = Math.ceil(uninv + 2.5 * xInt);
+  var totalLow = uninv;
+
+  // Update slider container text
+  document.getElementById('totalbonusHigh').textContent = totalHigh;
+  document.getElementById('totalbonusLow').textContent = totalLow;
+
+  // Update table cells
+  document.getElementById('lotteryEarnHigh').textContent = lotteryHigh;
+  document.getElementById('lotteryEarnLow').textContent = lotteryLow;
+  document.getElementById('uninvLeft1').textContent = uninv;
+  document.getElementById('uninvLeft2').textContent = uninv;
+  document.getElementById('totalBonusHigh').textContent = totalHigh;
+  document.getElementById('totalBonusLow').textContent = totalLow;
+}
+
+// Toggle dropdown visibility
+function toggleDropdown() {
+  var dropdown = document.getElementById('investmentInfo');
+  var button = document.getElementById('dropdownButton');
+
+  if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+    dropdown.style.display = 'block';
+    button.innerHTML = 'Hide Possible Bonus Breakdown ▲';
+  } else {
+    dropdown.style.display = 'none';
+    button.innerHTML = 'Show Possible Bonus Breakdown ▼';
+  }
+}
+
+// Initialize display on page load - do not call updateDisplay(0)
+window.onload = function() {
+  // Leave slider text hidden until moved
+}
+</script>
+
+{{ endblock }}

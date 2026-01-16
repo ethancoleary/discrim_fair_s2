@@ -1,0 +1,53 @@
+{{ block title }}
+Results
+{{ endblock }}
+
+{{ block content }}
+
+<h4>Your investment result and bonus payment</h4>
+<p>
+    You chose to invest {{ inv }} tokens and kept the remaining {{ kept }} tokens.
+</p>
+<p>
+The fair die was rolled and landed on the number {{ die }}.
+This means that your investment {{ if player.lottery == 0 }} was lost. {{ endif }}
+{{ if player.lottery == 1 }} will deliver 2.5 times {{ inv  }}. {{ endif }}
+    </p>
+<p>
+Therefore, your final token balance is equal to {{ earning }} meaning you will
+receive a bonus payment equal to ${{ bonus }}. You will receive this within one week.
+    </p>
+
+<h4>Your extra participation fee</h4>
+<p>
+    {{ if player.participant.receive == 1 }}
+You received an extra participation fee of $0.50. As we previously mentioned,
+    this sum may have been affected by a decision in the experiment.
+    Your match had the opportunity to reallocate the fee to themselves.
+    If your match chose not to do this, you will receive your extra participation
+    fee with your bonus payment.
+{{ endif }}
+{{ if player.participant.receive == 0 }}
+You received an extra participation fee of $0.50.
+{{ if player.participant.steal == 0 }}
+    You chose to not transfer your match's participation fee to yourself.
+    You will both receive this amount together with your bonus payment.
+{{ endif }}
+{{ if player.participant.steal }}
+    You chose to transfer your match's participation fee to yourself. This transfer cost you $0.25.
+    You will therefore receive ${{ participation_fee }} together with your bonus payment.
+{{ endif }}
+{{ endif }} 
+</p><br><br>
+<p>
+    If you have any comments about the experiment, please write them in the form below.
+    </p>
+{{ form.feedback }}
+<br>
+<p>
+Please click 'next' to be redirected back to Prolific.
+    </p>
+    {{ next_button }}
+{{ endblock }}
+
+

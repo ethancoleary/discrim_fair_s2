@@ -1,0 +1,46 @@
+{{ block title }}
+    Survey
+{{ endblock }}
+
+{{ block content }}
+<div style="display: flex; justify-content: center; margin-bottom: 18px;">
+  <div style="width: 60%; background: #eee; border-radius: 6px; height: 24px;">
+    <div style="width: {{ progress }}%; background: #3b82f6; height: 24px; border-radius: 6px; transition: width 0.2s;">
+      <span style="color: black; font-weight: bold; padding-left: 10px;">{{ progress }}%</span>
+    </div>
+  </div>
+</div>
+
+
+<p>
+  To check your attention, please type the number 47 into the box below. The submit button will appear when you type in this number.
+</p>
+<center>
+  <input type="number" id="invest_ch" name="invest_ch" style="width:100px;" min="0" max="300" step="1" required>
+</center>
+<br><br>
+<center>
+  <div id="next_button_container" style="display: none;">
+    {{ next_button }}
+  </div>
+</center>
+
+<script>
+  const investInput = document.getElementById('invest_ch');
+  const nextButton = document.getElementById('next_button_container');
+  investInput.addEventListener('input', function() {
+    if (investInput.value.trim() === '47') {
+      nextButton.style.display = 'block';
+    } else {
+      nextButton.style.display = 'none';
+    }
+  });
+  // Make sure the button is hidden on first load
+  window.addEventListener('DOMContentLoaded', function() {
+    if (investInput.value.trim() !== '47') {
+      nextButton.style.display = 'none';
+    }
+  });
+</script>
+
+{{ endblock }}

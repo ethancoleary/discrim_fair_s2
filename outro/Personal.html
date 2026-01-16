@@ -1,0 +1,41 @@
+{{ block title }}
+    Survey
+{{ endblock }}
+
+{{ block content }}
+<div style="display: flex; justify-content: center; margin-bottom: 18px;">
+  <div style="width: 60%; background: #eee; border-radius: 6px; height: 24px;">
+    <div style="width: {{ progress }}%; background: #3b82f6; height: 24px; border-radius: 6px; transition: width 0.2s;">
+      <span style="color: black; font-weight: bold; padding-left: 10px;">{{ progress }}%</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<p>
+    What is the highest level of education that you have achieved?<br>
+  {{ form.education }}
+</p>
+<p>What is your current working status?<br>
+  {{ form.work_status }}
+</p>
+<p>To check your attention, please select 1.<br>
+{{ form.children }}
+</p>
+<p>What is your total household income per year?<br>
+  {{ form.income }}
+</p>
+<p>
+    What is your ethnicity?<br>
+    {{ form.ethnicity }}
+</p>
+<p>
+    How would you best describe your political affiliation?<br>
+    {{ form.political_affil }}
+</p>
+<center>
+        {{ next_button }}
+</center>
+{{ endblock }}
+
+

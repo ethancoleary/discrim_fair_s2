@@ -1,0 +1,45 @@
+{{ block title }}
+    Survey
+{{ endblock }}
+
+{{ block content }}
+<p>
+In that case, based on which of the following do you think that you were treated differently during your education? (Select all that apply) <br><br>
+  <div>
+    <input type="checkbox" id="scales" value=1 name="discrim_educ_identity_age" />
+    <label for="scales">Age</label>
+  </div>
+<div>
+    <input type="checkbox" id="scales" value=1 name="discrim_educ_identity_gender" />
+    <label for="scales">Gender</label>
+  </div>
+<div>
+    <input type="checkbox" id="scales" value=1 name="discrim_educ_identity_race" />
+    <label for="scales">Race/Ethnicity</label>
+  </div>
+<div>
+    <input type="checkbox" id="scales" value=1 name="discrim_educ_identity_religion" />
+    <label for="scales">Religion</label>
+  </div>
+<div>
+    <input type="checkbox" id="scales" value=1 name="discrim_educ_identity_disability" />
+    <label for="scales">Disability</label>
+  </div>
+<div>
+    <input type="checkbox" id="scales" value=1 name="discrim_educ_identity_sex" />
+    <label for="scales">Sexual Orientation</label>
+  </div>
+<div>
+    <input type="checkbox" id="scales" value=1 name="discrim_educ_identity_other" />
+    <label for="scales">Other</label>
+  </div>
+
+</p>
+  <center>
+    {{ next_button }}
+  </center>
+
+</form>
+{{ endblock }}
+
+

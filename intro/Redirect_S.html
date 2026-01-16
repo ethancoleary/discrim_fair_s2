@@ -1,0 +1,36 @@
+{{ block title }}
+
+{{ endblock }}
+
+{{block content}}
+<h4>Your investment result and bonus payment</h4>
+<p>
+    You chose to invest {{ player.invest }} tokens and kept the remaining {{ kept }} tokens.
+</p>
+<p>
+The fair die was rolled and landed on the number {{ player.die }}.
+This means that your investment {{ if player.lottery == 0 }} was lost. {{ endif }}
+{{ if player.lottery == 1 }} will deliver 2.5 times {{ player.invest }}. {{ endif }}
+    </p>
+<p>
+Therefore, your final token balance is equal to {{ player.earnings }} meaning you will
+receive a bonus payment equal to ${{ bonus }}. You will receive this within one week.
+    </p>
+
+You will now be redirected automatically redirected to Prolific.
+
+<script>
+    let completionlink = js_vars.completionlinkscreenout;
+
+    window.onload = function(){
+        window.location.href=completionlink;
+    }
+</script>
+
+
+{{ endblock }}
+
+
+
+
+

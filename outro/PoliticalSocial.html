@@ -1,0 +1,73 @@
+{{ block title }}
+
+{{ endblock }}
+
+{{ block content }}
+<div style="display: flex; justify-content: center; margin-bottom: 18px;">
+  <div style="width: 60%; background: #eee; border-radius: 6px; height: 24px;">
+    <div style="width: {{ progress }}%; background: #3b82f6; height: 24px; border-radius: 6px; transition: width 0.2s;">
+      <span style="color: black; font-weight: bold; padding-left: 10px;">{{ progress }}%</span>
+    </div>
+  </div>
+</div>
+</div>
+<p>
+On <b>social</b> issues, how would you consider your political views?<br><br></p>
+<div>
+<table style="width:100%; text-align:center; border-collapse: collapse;">
+        <tr>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Very liberal</th>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Somewhat liberal</th>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Neutral</th>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Somewhat conservative</th>
+        <th style="border: 1px solid black; padding: 2px; width: 20%;">Very conservative</th>
+    </tr>
+    <tr>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="political_social"
+               value=1
+               id="political_social_1"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="political_social"
+               value=2
+               id="political_social_2"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="political_social"
+               value=3
+               id="political_social_3"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="political_social"
+               value=4
+               id="political_social_4"
+               >
+      </td>
+    <td style="border: 1px solid black; padding: 8px;">
+        <input type="radio"
+               name="political_social"
+               value=5
+               id="political_social_5"
+               >
+      </td>
+    </tr>
+
+</table>
+    </div>
+<br><br>
+  <center>
+    {{ next_button }}
+  </center>
+
+</form>
+{{ endblock }}
+
+
