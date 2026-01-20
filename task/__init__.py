@@ -1,6 +1,7 @@
 from otree.api import *
 import random
 import math
+from common import MyBasePage
 
 doc = """
 Your app description
@@ -62,15 +63,24 @@ class Player(BasePlayer):
     group_treatment_id = models.IntegerField(initial=0)
     treatment = models.IntegerField(initial=0)
 
+    blur_log = models.LongStringField(blank=True)
+    blur_count = models.IntegerField(initial=0, blank=True)
+    blur_warned = models.IntegerField(initial=0, blank=True)
+
 
 
 # PAGES
-class TaskIntro1(Page):
-    form_model = 'player'
-    form_fields = ['slider_value']
+class TaskIntro(MyBasePage):
+    # add extra fields on top of base tracking fields
+    @property
+    def form_fields(self):
+        return MyBasePage.form_fields + ['slider_value']
+
 
     @staticmethod
     def vars_for_template(player):
+        ctx = MyBasePage.vars_for_template(player)
+
         treatment = player.participant.treatment
 
         if treatment < 4:
@@ -78,8 +88,19 @@ class TaskIntro1(Page):
         elif treatment > 3:
             player.participant.group = player.participant.gender
 
-class TaskIntro2(Page):
-    pass
+        return ctx
+
+class TaskIntro2(MyBasePage):
+    @property
+    def form_fields(self):
+        return MyBasePage.form_fields + ['slider_value']
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        ctx = MyBasePage.vars_for_template(player)
+        # add any page-specific vars here, then return
+        # ctx.update({...})
+        return ctx
 
 class CompCheck(Page):
     form_model = 'player'
@@ -140,6 +161,8 @@ class CompCheck(Page):
             player.chosen = 0
 
 class TaskIntro3(Page):
+    form_model = 'player'
+    form_fields = ['blur_count', 'blur_log', 'blur_warned']
 
     @staticmethod
     def vars_for_template(player):
@@ -175,13 +198,14 @@ class TaskIntro3(Page):
             'yourgender': yourgender,
             'partnergender': partnergender,
             'yourbudget': yourbudget,
-            'partnerbudget': partnerbudget
+            'partnerbudget': partnerbudget,
+            'hidden_fields': ['blur_log', 'blur_count', 'blur_warned'],
         }
 
 
 class Decision(Page):
     form_model = 'player'
-    form_fields = ['transfer']
+    form_fields = ['transfer', 'blur_count', 'blur_log', 'blur_warned']
 
     @staticmethod
     def is_displayed(player):
@@ -191,9 +215,15 @@ class Decision(Page):
     def before_next_page(player, timeout_happened):
         player.participant.steal = player.transfer
 
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            'hidden_fields': ['blur_log', 'blur_count', 'blur_warned'],
+        }
+
 class InvestmentDecision300(Page):
     form_model = 'player'
-    form_fields = ['investment300']
+    form_fields = ['investment300', 'blur_count', 'blur_log', 'blur_warned']
 
     @staticmethod
     def is_displayed(player):
@@ -206,9 +236,15 @@ class InvestmentDecision300(Page):
         participant.die = die
         participant.investment = player.investment300
 
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            'hidden_fields': ['blur_log', 'blur_count', 'blur_warned'],
+        }
+
 class InvestmentDecision100(Page):
     form_model = 'player'
-    form_fields = ['investment100']
+    form_fields = ['investment100', 'blur_count', 'blur_log', 'blur_warned']
 
     @staticmethod
     def is_displayed(player):
@@ -220,6 +256,12 @@ class InvestmentDecision100(Page):
         die = random.randint(1, 6)
         participant.die = die
         participant.investment = player.investment100
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            'hidden_fields': ['blur_log', 'blur_count', 'blur_warned'],
+        }
 
 
 page_sequence = [

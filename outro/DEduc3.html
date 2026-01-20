@@ -12,6 +12,23 @@ Do you think you were treated better or worse during your education because of t
   </center>
 
 </form>
+<div style="display:none">
+    {% for field in form %}
+      {% if field.name in hidden_fields %}
+        {{ formfield field.name }}
+      {% endif %}
+    {% endfor %}
+</div>
+
+{{ endblock }}
+
+{{ block scripts }}
+    {{ super }}
+    {{ load static }}
+    <script>
+        var PAGE_KEY = 'task/task_intro';  // or '{{ player.round_number }}' etc.
+    </script>
+    <script src="{{ static 'data_quality.js' }}"></script>
 {{ endblock }}
 
 

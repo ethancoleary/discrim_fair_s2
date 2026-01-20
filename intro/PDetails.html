@@ -1,5 +1,5 @@
 {{ block title }}
-Welcome
+
 {{ endblock }}
 
 {{ block content }}
@@ -10,7 +10,24 @@ What is your age?<br>
 What is your gender identity?<br>
 <p> {{ form.gender }} </p>
 <br><br>
-    {{ next_button }}
+   <div style="display:none">
+    {% for field in form %}
+      {% if field.name in hidden_fields %}
+        {{ formfield field.name }}
+      {% endif %}
+    {% endfor %}
+</div>
+
+{{ next_button }}
+
 {{ endblock }}
 
+{{ block scripts }}
+    {{ super }}
+    {{ load static }}
+    <script>
+        var PAGE_KEY = 'intro/pdetails';  // or '{{ player.round_number }}' etc.
+    </script>
+    <script src="{{ static 'data_quality.js' }}"></script>
+{{ endblock }}
 

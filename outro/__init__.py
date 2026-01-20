@@ -326,6 +326,26 @@ class Player(BasePlayer):
     participation_fee = models.FloatField()
     invest_ch = models.IntegerField()
 
+    blur_log = models.LongStringField(blank=True)
+    blur_count = models.IntegerField(initial=0, blank=True)
+    blur_warned = models.IntegerField(initial=0, blank=True)
+
+BLUR_HIDDEN_FIELDS = ['blur_log', 'blur_count', 'blur_warned']
+
+class Recall(Page):
+    form_model = 'player'
+    form_fields = [
+        'reason', 'blur_count', 'blur_log', 'blur_warned'
+    ]
+
+    @staticmethod
+    def vars_for_template(self):
+        return {
+            'progress': 1,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
+
+
 class Personal(Page):
     form_model = 'player'
     form_fields = [
@@ -334,15 +354,18 @@ class Personal(Page):
         'children',
         'income',
         'ethnicity',
-        'political_affil'
+        'political_affil',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=92  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 92,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
 
     def error_message(self, values):
         if values.get('children') != 1:
@@ -351,7 +374,12 @@ class Personal(Page):
 
 class Personal2(Page):
     form_model = 'player'
-    form_fields = ['education_economics']
+    form_fields = [
+        'education_economics',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
+    ]
 
     @staticmethod
     def is_displayed(player):
@@ -359,41 +387,49 @@ class Personal2(Page):
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=96  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 96,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
 
 
 class PoliticalSocial(Page):
     form_model = 'player'
     form_fields = [
-        'political_social'
+        'political_social',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=60  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 60,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
+
 
 class PoliticalEconomic(Page):
     form_model = 'player'
     form_fields = [
-        'political_economic'
+        'political_economic',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=68  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 68,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
+
 
 class DWork1(Page):
     form_model = 'player'
-    form_fields= [
+    form_fields = [
         'discrim_work',
         'discrim_work_identity_age',
         'discrim_work_identity_gender',
@@ -402,15 +438,18 @@ class DWork1(Page):
         'discrim_work_identity_religion',
         'discrim_work_identity_sex',
         'discrim_work_identity_other',
-        'discrim_work_pref'
+        'discrim_work_pref',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=44  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 44,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
 
 
 class DEduc1(Page):
@@ -424,60 +463,61 @@ class DEduc1(Page):
         'discrim_educ_identity_religion',
         'discrim_educ_identity_sex',
         'discrim_educ_identity_other',
-        'discrim_educ_pref'
+        'discrim_educ_pref',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=52  # You can calculate this as (page_number/total_pages)*100
-        )
-
-
-class Recall(Page):
-    form_model = 'player'
-    form_fields = [
-        'reason'
-    ]
-    @staticmethod
-    def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=1  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 52,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
 
 
 class Fair(Page):
     form_model = 'player'
     form_fields = [
-        'allocation_fair'
+        'allocation_fair',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=9  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 9,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
+
 
 class Eff(Page):
     form_model = 'player'
     form_fields = [
-        'allocation_eff'
+        'allocation_eff',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=18  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 18,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
+
 
 class Invest_Other_Budget300(Page):
     form_model = 'player'
     form_fields = [
-        'invest_if_300'
+        'invest_if_300',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
@@ -486,32 +526,41 @@ class Invest_Other_Budget300(Page):
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=28  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 28,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
 
 
 class Invest_Other_Budget100(Page):
     form_model = 'player'
     form_fields = [
-        'invest_if_100'
+        'invest_if_100',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
-
-    @staticmethod
-    def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=28  # You can calculate this as (page_number/total_pages)*100
-        )
 
     @staticmethod
     def is_displayed(player):
         return player.participant.receive == 1
 
+    @staticmethod
+    def vars_for_template(self):
+        return {
+            'progress': 28,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
+
+
 class Invest_Ch(Page):
     form_model = 'player'
-    form_fields = ['invest_ch']
+    form_fields = [
+        'invest_ch',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
+    ]
 
     @staticmethod
     def vars_for_template(player):
@@ -519,27 +568,30 @@ class Invest_Ch(Page):
 
         if participant.receive == 1:
             budget = 300
-            otherbudget=100
+            otherbudget = 100
         else:
             budget = 100
-            otherbudget=300
+            otherbudget = 300
 
-
-        # If you have 10 survey pages, and this is page 3:
         return {
             'budget': budget,
             'otherbudget': otherbudget,
-            'progress':32  # You can calculate this as (page_number/total_pages)*100
+            'progress': 32,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
         }
 
     def error_message(self, values):
         if values.get('invest_ch') != 47:
             return "You must enter 47 to proceed."
 
+
 class Invest_Match_Budget300(Page):
     form_model = 'player'
     form_fields = [
-        'invest_match_300'
+        'invest_match_300',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
@@ -548,16 +600,19 @@ class Invest_Match_Budget300(Page):
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=36  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 36,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
 
 
 class Invest_Match_Budget100(Page):
     form_model = 'player'
     form_fields = [
-        'invest_match_100'
+        'invest_match_100',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
@@ -566,37 +621,44 @@ class Invest_Match_Budget100(Page):
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=36  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 36,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
 
 
 class Inequality(Page):
     form_model = 'player'
     form_fields = [
-        'inequality'
+        'inequality',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=72  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 72,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
+
 
 class Representation(Page):
     form_model = 'player'
     form_fields = [
-        'representation'
+        'representation',
+        'blur_count',
+        'blur_log',
+        'blur_warned',
     ]
 
     @staticmethod
     def vars_for_template(self):
-        # If you have 10 survey pages, and this is page 3:
-        return dict(
-            progress=84  # You can calculate this as (page_number/total_pages)*100
-        )
+        return {
+            'progress': 84,
+            'hidden_fields': BLUR_HIDDEN_FIELDS,
+        }
 
 
 class Results(Page):
@@ -617,7 +679,7 @@ class Results(Page):
         else:
             kept = 100 - participant.investment
 
-        if die < 3 :
+        if die < 3:
             player.lottery = 1
             earning = math.ceil(2.5 * inv) + kept
             player.earning = earning
@@ -639,8 +701,6 @@ class Results(Page):
             else:
                 participation_fee = 0.5
 
-
-
         player.participation_fee = participation_fee
 
         if participation_fee == 0.5:
@@ -657,18 +717,16 @@ class Results(Page):
             'earning': earning,
             'bonus': bonus,
             'participation_fee': participation_fee,
-            'progress':100,
-
+            'progress': 100,
         }
+
+
 class Redirect(Page):
-        @staticmethod
-        def js_vars(player):
-            return dict(
-                completionlinkfull=
-                player.subsession.session.config['completionlinkfull']
-            )
-
-
+    @staticmethod
+    def js_vars(player):
+        return dict(
+            completionlinkfull=player.subsession.session.config['completionlinkfull']
+        )
 
 
 page_sequence = [
@@ -689,5 +747,5 @@ page_sequence = [
     Personal,
     Personal2,
     Results,
-    Redirect
+    Redirect,
 ]

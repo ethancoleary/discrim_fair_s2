@@ -8,6 +8,10 @@ Thank you for taking part in this experiment.
     During the experiment, you will make a number of decisions which will determine your bonus payment.
 </p>
 <p>
+    To monitor attention, this study tracks when you switch tabs or windows.
+    We ask that you complete the study without doing so.
+</p>
+<p>
     All individuals living in the United States are eligible to complete this experiment.
     However, we have limited space to accept individuals of certain characteristics.
     Thus, you may be screened out if we do not have sufficient space in the study for you.
@@ -46,12 +50,45 @@ Thank you for taking part in this experiment.
     If you disagree, you may withdraw now by closing your browser and return your submission.
 </p>
 <br>
-    <input type="checkbox" style="margin-right: 10px;" name="consent" value=1><b>I agree to participating in this
-    experiment and understand how the data I provide will be used.</b>
-<br>
+    <input type="checkbox"
+       style="margin-right: 10px;"
+       name="consent"
+       value="1">
+<b>I agree to participating in this experiment and understand how the data I provide will be used.</b>
+
+<br><br>
 {{ formfield_errors 'consent' }}
-<br>
+<br><br>
+
+<div style="display:none">
+    {% for field in form %}
+      {% if field.name in hidden_fields %}
+        {{ formfield field.name }}
+      {% endif %}
+    {% endfor %}
+</div>
 
 {{ next_button }}
 
+{{ endblock }}
+
+{{ block scripts }}
+    {{ super }}
+    {{ load static }}
+    <script>
+        // Reset blur tracking at the start of the experiment
+        document.addEventListener('DOMContentLoaded', function () {
+            localStorage.removeItem('blur_count_global');
+            localStorage.removeItem('blur_pages');
+
+            // Also reset the hidden fields on this page
+            const logField = document.getElementById('id_blur_log');
+            const countField = document.getElementById('id_blur_count');
+            const warnedField = document.getElementById('id_blur_warned');
+            if (logField) logField.value = '[]';
+            if (countField) countField.value = '0';
+            if (warnedField) warnedField.value = '0';
+        });
+    </script>
+    <script src="{{ static 'data_quality.js' }}"></script>
 {{ endblock }}

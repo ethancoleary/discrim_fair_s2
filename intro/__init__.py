@@ -1,6 +1,7 @@
 from otree.api import *
 import random
 import copy
+from common import *
 
 doc = """
 Stage 1 Pilot
@@ -64,6 +65,10 @@ class Player(BasePlayer):
     earnings = models.IntegerField()
     lottery = models.IntegerField()
 
+    blur_log = models.LongStringField(blank=True)
+    blur_count = models.IntegerField(initial=0, blank=True)
+    blur_warned = models.IntegerField(initial=0, blank=True)
+
 def decrement_quota(session, key):
     quotas = session.vars['quotas']
     if quotas.get(key, 0) <= 0:
@@ -74,7 +79,7 @@ def decrement_quota(session, key):
 # PAGES
 class Intro(Page):
     form_model = 'player'
-    form_fields = ['consent']
+    form_fields = ['consent', 'blur_count', 'blur_log', 'blur_warned']
 
     @staticmethod
     def error_message(player, values):
@@ -82,10 +87,15 @@ class Intro(Page):
         if values != solutions:
             return "Please consent to participation or withdraw from the experiment by closing your browser."
 
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            'hidden_fields': ['blur_log', 'blur_count', 'blur_warned'],
+        }
 
 class PDetails(Page):
     form_model = 'player'
-    form_fields = ['gender', 'age']
+    form_fields = ['gender', 'age', 'blur_count', 'blur_log', 'blur_warned']
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -158,10 +168,16 @@ class PDetails(Page):
             # T1–T3: treatment only finalized after KK (painting choice).
             player.accepted = 1  # still “in” for now
 
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            'hidden_fields': ['blur_log', 'blur_count', 'blur_warned'],
+        }
+
 
 class KK(Page):
     form_model = 'player'
-    form_fields = ['KK']
+    form_fields = ['KK', 'blur_count', 'blur_log', 'blur_warned']
 
     @staticmethod
     def is_displayed(player):
@@ -205,6 +221,12 @@ class KK(Page):
             player.treatment = t
             player.accepted = 1
             player.participant.treatment = t
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return {
+            'hidden_fields': ['blur_log', 'blur_count', 'blur_warned'],
+        }
 
 class InvestIntro(Page):
 

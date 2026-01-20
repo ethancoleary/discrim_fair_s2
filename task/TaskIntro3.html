@@ -41,6 +41,24 @@ you will receive an investment budget of {{ yourbudget }} tokens and your match 
     Click 'next' to move forward.
 </p>
 {{ next_button }}
+
+<div style="display:none">
+    {% for field in form %}
+      {% if field.name in hidden_fields %}
+        {{ formfield field.name }}
+      {% endif %}
+    {% endfor %}
+</div>
+
+{{ endblock }}
+
+{{ block scripts }}
+    {{ super }}
+    {{ load static }}
+    <script>
+        var PAGE_KEY = 'task/task_intro3';  // or '{{ player.round_number }}' etc.
+    </script>
+    <script src="{{ static 'data_quality.js' }}"></script>
 {{ endblock }}
 
 

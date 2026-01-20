@@ -103,4 +103,21 @@ You received <b>100 tokens as an investment budget</b> while your match received
 <br><br>
 
 
+<div style="display:none">
+    {% for field in form %}
+      {% if field.name in hidden_fields %}
+        {{ formfield field.name }}
+      {% endif %}
+    {% endfor %}
+</div>
+
+{{ endblock }}
+
+{{ block scripts }}
+    {{ super }}
+    {{ load static }}
+    <script>
+        var PAGE_KEY = 'task/decision';  // or '{{ player.round_number }}' etc.
+    </script>
+    <script src="{{ static 'data_quality.js' }}"></script>
 {{ endblock }}
