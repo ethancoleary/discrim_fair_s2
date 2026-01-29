@@ -21,7 +21,21 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     pass
 
+def check3_choices(player):
+    # Base text for options 2 and 3 is the same for all treatments
+    option2 = 'According to who belongs to the group which, on average, invested more in a previous study.'
+    option3 = 'According to a real participant with past group data on investment who wishes to maximize their commission from investments.'
 
+    if player.participant.treatment < 4:
+        option1 = 'According to who selected a randomly chosen painting.'
+    else:
+        option1 = 'According to who identified with a randomly selected gender.'
+
+    return [
+        [1, option1],
+        [2, option2],
+        [3, option3],
+    ]
 class Player(BasePlayer):
     investment300 = models.IntegerField(min=0,max=300)
     investment100 = models.IntegerField(min=0, max=100)
@@ -38,11 +52,6 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect
     )
     check3 = models.IntegerField(
-        choices = [
-            [1, 'According to who identified with a randomly selected gender.'],
-            [2, 'According to who belongs to the group which, on average, invested more in a previous study.'],
-            [3, 'According to a real participant with past group data on investment who wishes to maximize their commission from investments.']
-        ],
         widget=widgets.RadioSelect
     )
     check4 = models.IntegerField(
@@ -69,8 +78,9 @@ class Player(BasePlayer):
 
 
 
+
 # PAGES
-class TaskIntro(MyBasePage):
+class TaskIntro1(MyBasePage):
     # add extra fields on top of base tracking fields
     @property
     def form_fields(self):
@@ -82,6 +92,7 @@ class TaskIntro(MyBasePage):
         ctx = MyBasePage.vars_for_template(player)
 
         treatment = player.participant.treatment
+        player.treatment = player.participant.treatment
 
         if treatment < 4:
             player.participant.group = player.participant.painting
@@ -108,6 +119,13 @@ class CompCheck(Page):
 
     @staticmethod
     def error_message(player, values):
+        if player.treatment == 1 or player.treatment == 4:
+            correct_answer3 = 1
+        elif player.treatment == 2:
+            correct_answer3 = 2
+        else:
+            correct_answer3 = 3
+
         if values['check1'] != 300:
             player.incorrect1 = 1
             return ('Your answer to question 1 is wrong. One of you or your match will receive 300 tokens and the other 100.')
@@ -117,7 +135,7 @@ class CompCheck(Page):
             return (
                 'Your answer to question 2 is wrong. The lottery is successful with a probability of 2/6.')
 
-        elif values['check3'] != player.treatment:
+        elif values['check3'] != correct_answer3:
             player.incorrect3 = 1
             if player.treatment == 1:
                 return (
@@ -128,7 +146,12 @@ class CompCheck(Page):
             elif player.treatment == 3:
                 return (
                     'Your answer to question 3 is wrong. A decision maker will use data from a previous study to allocate a 300 token budget to the individual from the group it believes will invest more in the lottery.')
-
+            elif player.treatment == 4:
+                return (
+                    'Your answer to question 3 is wrong. A gender group is chosen at random and the individual who belongs to that group in the match receives 300 tokens, the other 100.')
+            elif player.treatment == 5:
+                return (
+                    'Your answer to question 3 is wrong. A decision maker will use data from a previous study to allocate a 300 token budget to the individual from the group it believes will invest more in the lottery.')
 
         elif values['check4'] != 3:
             player.incorrect4 = 1
@@ -137,28 +160,112 @@ class CompCheck(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        # Identify others with same group_treatment_id and treatment, NOT counting current player
-        same_group_treatment = [
-            p for p in player.subsession.get_players()
-            if p != player and
-               p.group_treatment_id == player.group_treatment_id and
-               p.treatment == player.treatment
-        ]
-        # Count those who have gone past CompCheck (i.e., their page index > this page index)
-        # We can check participant._index_in_pages; oTree increases this with each page.
-        # Alternatively, you might use p.participant.vars or a flag set after CompCheck.
-        my_index = player.participant._index_in_pages
-        already_moved_on = [
-            p for p in same_group_treatment
-            if p.participant._index_in_pages > my_index
-        ]
-        n_moved_on = len(already_moved_on)
 
-        # Set chosen based on parity
-        if n_moved_on % 2 == 0:
-            player.chosen = 1
-        else:
-            player.chosen = 0
+
+        if player.treatment == 1:
+            if player.participant.painting==1:
+                player.group_treatment_id = 11
+            else:
+                player.group_treatment_id = 21
+
+        elif player.treatment == 2:
+            if player.participant.painting==1:
+                player.group_treatment_id = 12
+            else:
+                player.group_treatment_id = 22
+
+        elif player.treatment == 3:
+            if player.participant.painting == 1:
+                player.group_treatment_id = 13
+            else:
+                player.group_treatment_id = 23
+
+        elif player.treatment == 4:
+            if player.participant.gender == 1: #female
+                player.group_treatment_id = 14
+            else: #male
+                player.group_treatment_id = 24
+
+        elif player.treatment == 5:
+            if player.participant.gender == 1: #female
+                player.group_treatment_id = 15
+            else: #male
+                player.group_treatment_id = 25
+
+        #temporarily assign chosen
+
+        if player.treatment == 1 or player.treatment == 4:
+            coin_flip = random.randint(0, 1)
+            player.participant.chosen = coin_flip
+
+            my_group = getattr(player.participant, 'group', None)
+            my_chosen = getattr(player.participant, 'chosen', None)
+            my_treatment = player.treatment
+            my_index = player.participant._index_in_pages
+
+            # opposite group, opposite chosen
+            opp_group_treatment_chosen = [
+                p for p in player.subsession.get_players()
+                if p.id_in_subsession != player.id_in_subsession
+                   and getattr(p, 'treatment', None) == my_treatment
+                   and getattr(p.participant, 'group', None) is not None
+                   and getattr(p.participant, 'chosen', None) is not None
+                   and p.participant.group != my_group
+                   and p.participant.chosen != my_chosen
+            ]
+
+            already_moved_on_opp = [
+                p for p in opp_group_treatment_chosen
+                if getattr(p.participant, '_index_in_pages', 0) > my_index
+            ]
+            n_moved_on_opp = len(already_moved_on_opp)
+
+            # same group, same chosen
+            same_group_treatment_chosen = [
+                p for p in player.subsession.get_players()
+                if p.id_in_subsession != player.id_in_subsession
+                   and getattr(p, 'treatment', None) == my_treatment
+                   and getattr(p.participant, 'group', None) is not None
+                   and getattr(p.participant, 'chosen', None) is not None
+                   and p.participant.group == my_group
+                   and p.participant.chosen == my_chosen
+            ]
+
+            already_moved_on_same = [
+                p for p in same_group_treatment_chosen
+                if getattr(p.participant, '_index_in_pages', 0) > my_index
+            ]
+            n_moved_on_same = len(already_moved_on_same)
+
+            # flip if imbalance > 20
+            if n_moved_on_same > n_moved_on_opp + 20:
+                player.participant.chosen = 1 - coin_flip
+
+            player.chosen = player.participant.chosen
+
+
+        ## COMPUTER
+        elif player.treatment == 2:
+            if player.participant.painting == 1:
+                player.participant.chosen = 1
+            else:
+                player.participant.chosen = 0
+
+        ## HUMAN PAINTING
+        elif player.treatment == 3:
+            if player.participant.painting == 1:
+                player.participant.chosen = 1
+            else:
+                player.participant.chosen = 0
+
+        ## HUMAN GENDER
+        elif player.treatment == 5:
+            if player.participant.gender == 1:
+                player.participant.chosen = 0
+            else:
+                player.participant.chosen = 1
+
+        player.chosen = player.participant.chosen
 
 class TaskIntro3(Page):
     form_model = 'player'
@@ -167,38 +274,84 @@ class TaskIntro3(Page):
     @staticmethod
     def vars_for_template(player):
 
-        if player.participant.group == 1:
-            if player.chosen == 1:
-                chosen = "male"
+        # Chosen painting
+        if player.treatment == 1:
+            if player.participant.chosen == 1:
+                if player.participant.painting==1:
+                    chosenpainting = "A"
+                else:
+                    chosenpainting = "B"
             else:
-                chosen = "female"
+                if player.participant.painting == 1:
+                    chosenpainting = "B"
+                else:
+                    chosenpainting = "A"
         else:
-            if player.chosen == 1:
-                chosen = "female"
+            chosenpainting = ""
+
+        # Chosen gender
+        if player.treatment == 4:
+            if player.participant.chosen == 1:
+                if player.participant.gender == 1:
+                    chosengender = "female"
+                else:
+                    chosengender = "male"
             else:
-                chosen = "male"
-
-
-        if player.participant.group == 1:
-            yourgender = "male"
-            partnergender = "female"
+                if player.participant.gender == 1:
+                    chosengender = "male"
+                else:
+                    chosengender = "female"
         else:
+            chosengender = ""
+
+        # DM chosen group
+        if player.treatment == 3:
+            chosen = "A"
+        elif player.treatment == 5:
+            chosen = "male"
+        else:
+            chosen = ""
+
+        if player.treatment < 4:
+            if player.participant.painting == 1:
+                yourpainting = "A"
+                matchpainting = "B"
+            else:
+                yourpainting = "B"
+                matchpainting = "A"
+        else:
+            yourpainting = ""
+            matchpainting = ""
+
+        if player.participant.gender == 1:
             yourgender = "female"
-            partnergender = "male"
-
-        if player.chosen == 1:
-            yourbudget = "300"
-            partnerbudget = "100"
+            matchgender = "male"
         else:
-            yourbudget = "100"
-            partnerbudget = "300"
+            matchgender = "female"
+            yourgender = "male"
+
+        if player.participant.chosen == 1:
+            yourbudget = 300
+            matchbudget = 100
+        else:
+            yourbudget = 100
+            matchbudget = 300
+
+
+
 
         return {
+            'chosenpainting': chosenpainting,
             'chosen': chosen,
-            'yourgender': yourgender,
-            'partnergender': partnergender,
+            'chosengender': chosengender,
+
+            'yourpainting': yourpainting,
             'yourbudget': yourbudget,
-            'partnerbudget': partnerbudget,
+            'yourgender': yourgender,
+
+            'matchpainting': matchpainting,
+            'matchbudget': matchbudget,
+            'matchgender': matchgender,
             'hidden_fields': ['blur_log', 'blur_count', 'blur_warned'],
         }
 

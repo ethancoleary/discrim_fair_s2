@@ -33,7 +33,7 @@ PARTICIPANT_FIELDS = [
     'gender',
     'treatment',
     'painting',
-    'receive',
+    'chosen',
     'investment',
     'die',
     'steal',

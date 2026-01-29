@@ -153,10 +153,10 @@ we will refer to this individual as your <i>match</i>.
     {{ endif }}
     {{ if player.participant.treatment > 3 }}
 
-       {{ if player.participant.group == 1 }}You are a male and are therefore <b>a member of the male group</b>.
-You have been matched with an individual who is a female and is therefore <b>a member of the female group</b>:{{endif}}
-{{ if player.participant.group == 2 }}You are a female and are therefore <b>a member of the female group</b>.
+       {{ if player.participant.group == 1 }}You are a female and are therefore <b>a member of the female group</b>.
 You have been matched with an individual who is a male and is therefore <b>a member of the male group</b>:{{endif}}
+{{ if player.participant.group == 2 }}You are a male and are therefore <b>a member of the male group</b>.
+You have been matched with an individual who is a female and is therefore <b>a member of the female group</b>:{{endif}}
 we will refer to this individual as your <i>match</i>.
 
     {{ endif }}
@@ -173,7 +173,7 @@ Soon each of you will be given some <b>tokens</b> as an <b>investment budget</b>
 <div id="lotteryContainer">
     <u><strong>Lottery</strong></u><br>
     <i>A fair six-sided die will be rolled. If the die lands on a 1 or a 2, you will
-    win two and half times the amount you invest.
+    win two and half times the amount you invest (and receive your investment back).
     If the die lands on a number higher than 2 (3, 4, 5 or 6), you will
     lose the amount you invest.</i>
 </div>
@@ -270,7 +270,7 @@ function updateDisplay(x) {
   var lotteryHigh = Math.ceil(2.5 * xInt);
   var lotteryLow = 0; // Always 0 for Case 2
   var uninv = 200 - xInt;
-  var totalHigh = Math.ceil(uninv + 2.5 * xInt);
+  var totalHigh = Math.ceil(uninv + 3.5 * xInt);
   var totalLow = uninv;
 
   // Update slider container text

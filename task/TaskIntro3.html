@@ -9,31 +9,43 @@
 <p>
     <h4>Final allocation of investment budgets</h4>
 {{ if player.treatment == 1 }}
+Painting {{ chosenpainting }} was randomly selected for you and your match.
+Since you chose {{ yourpainting }} and your match chose painting {{ matchpainting }},
+you will receive an investment budget of {{ yourbudget }} tokens adn your match will receive {{ matchbudget }} tokens.
+</p>
 
- The random gender group selected was the {{ if player.chosen == 1 and player.participant.group == 1 }}male{{ endif }}
-                                       {{ if player.chosen == 1 and player.participant.group == 2 }}female{{ endif }}
-                                       {{ if player.chosen == 0 and player.participant.group == 1 }}female{{ endif }}
-                                       {{ if player.chosen == 0 and player.participant.group == 2 }}male{{ endif }}
-                                        group.
-                                       Since you are{{ if player.participant.group == 2 }}fe{{endif}}male and your match is {{ if player.participant.group == 1 }}fe{{endif}}male,
-                                       you will receive an investment budget of {{ yourbudget }} tokens and your
-                                       match will receive {{ partnerbudget }} tokens.
+{{ endif }}
+{{ if player.treatment == 2 or player.treatment == 3 }}
+In the previous study, individuals from group A invested substantially more of their budget than individuals from group B.
+</p>
+{{ if player.treatment == 3 }}
+<p>
+The decision maker chose to allocate the 300 token budget to the individual from group {{ chosen }}.
+    </p>
+{{ endif }}
+<p>
+    Since you belong to group {{ yourpainting }} and your match belongs to group {{ matchpainting }},
+you will receive an investment budget of {{ yourbudget }} tokens and your match will receive {{ matchbudget }} tokens.
+    </p>
+{{ endif }}
+
+{{ if player.treatment == 4 }}
+ The random gender group selected was the {{ chosengender }} group.
+Since you are {{ yourgender }} and your match is {{ matchgender }},
+you will receive an investment budget of {{ yourbudget }} tokens and your
+match will receive {{ matchbudget }} tokens.
 </p>
 {{ endif }}
-{{ if player.treatment > 1 }}
+{{ if player.treatment == 5 }}
 <p>
 In the previous study, males invested substantially more of their budget than females.
     </p>
-{{ endif }}
-{{ if player.treatment == 3 }}
 <p>
     The decision maker chose to allocate the 300 token budget to the individual from the {{ chosen }} group.
     </p>
-{{ endif }}
-{{ if player.treatment > 1 }}
 <p>
-    Since you belong to the {{ yourgender }} group and your match belongs to {{ partnergender }} group,
-you will receive an investment budget of {{ yourbudget }} tokens and your match will receive {{ partnerbudget }} tokens.
+    Since you belong to the {{ yourgender }} group and your match belongs to {{ matchgender }} group,
+you will receive an investment budget of {{ yourbudget }} tokens and your match will receive {{ matchbudget }} tokens.
 </p>
 {{ endif }}
 

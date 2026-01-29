@@ -20,14 +20,14 @@ receive a bonus payment equal to ${{ bonus }}. You will receive this within one 
 
 <h4>Your extra participation fee</h4>
 <p>
-    {{ if player.participant.receive == 1 }}
+    {{ if player.participant.chosen == 1 }}
 You received an extra participation fee of $0.50. As we previously mentioned,
     this sum may have been affected by a decision in the experiment.
     Your match had the opportunity to reallocate the fee to themselves.
     If your match chose not to do this, you will receive your extra participation
     fee with your bonus payment.
 {{ endif }}
-{{ if player.participant.receive == 0 }}
+{{ if player.participant.chosen == 0 }}
 You received an extra participation fee of $0.50.
 {{ if player.participant.steal == 0 }}
     You chose to not transfer your match's participation fee to yourself.

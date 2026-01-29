@@ -23,7 +23,7 @@
 <div id="lotteryContainer">
     <u><strong>Lottery</strong></u><br>
     <i>A fair six-sided die will be rolled. If the die lands on a 1 or a 2, you will
-    win two and half times the amount you invest.
+    win two and half times the amount you invest (and receive your investment back).
     If the die lands on a number higher than 2 (3, 4, 5 or 6), you will
     lose the amount you invest.</i>
 </div>
@@ -70,7 +70,7 @@ input.addEventListener('input', function() {
         invested <= 300
     ) {
         let uninvested = 300 - invested;
-        let bonusAmount = uninvested + Math.ceil(2.5 * invested);
+        let bonusAmount = uninvested + Math.ceil(3.5 * invested);
         dynamicDiv.textContent =
             "You have a 2/6 chance of receiving a bonus equal to " + bonusAmount + " tokens and a 4/6 chance of receiving a bonus equal to " + uninvested + " tokens.";
     } else {

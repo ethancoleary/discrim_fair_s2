@@ -83,9 +83,9 @@ class Intro(Page):
 
     @staticmethod
     def error_message(player, values):
-        solutions = dict(consent=1)
-        if values != solutions:
+        if values.get('consent') != 1:
             return "Please consent to participation or withdraw from the experiment by closing your browser."
+
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -108,7 +108,7 @@ class PDetails(Page):
             player.treatment = 0
             return
 
-        player.participant.gender  = player.gender
+        player.participant.gender = player.gender
 
         # Gender-specific keys
         if player.gender == 2:
@@ -118,43 +118,46 @@ class PDetails(Page):
             gender_key_T4 = 'T4_Female'
             gender_key_T5 = 'T5_Female'
 
-        # Build list of candidate temp treatments
-        candidate_treatments = []
+        # Build candidate_treatments with possible *weights*.
+        # We'll represent this as a list to feed into random.choice.
+        weighted_candidates = []
 
-        # T4/T5 based on gender quotas
+        # T4/T5: upweight for males if desired
         if quotas.get(gender_key_T4, 0) > 0:
-            candidate_treatments.append(4)
+            if player.gender == 2:
+                weighted_candidates += [4, 4]  # weight 2
+            else:
+                weighted_candidates.append(4)  # weight 1
         if quotas.get(gender_key_T5, 0) > 0:
-            candidate_treatments.append(5)
+            if player.gender == 2:
+                weighted_candidates += [5, 5]  # weight 2
+            else:
+                weighted_candidates.append(5)  # weight 1
 
-        # T1–T3: We check if there is *any* remaining capacity in that treatment
-        # (regardless of painting) for now. Painting-specific quotas will be enforced in KK.
+        # T1–T3: same weight for both genders
         for t in [1, 2, 3]:
-            # if either Klee or Kand quota is positive, keep this treatment as candidate
             if quotas.get(f'T{t}_Klee', 0) > 0 or quotas.get(f'T{t}_Kand', 0) > 0:
-                candidate_treatments.append(t)
+                weighted_candidates.append(t)
 
-        if not candidate_treatments:
-            # no available quota anywhere -> screen out
+        if not weighted_candidates:
             player.accepted = 0
             player.treatment = 0
             return
 
-        # Randomly choose a temp treatment from feasible ones
-        temp_treat = random.choice(candidate_treatments)
+        temp_treat = random.choice(weighted_candidates)
         player.temp_treatment = temp_treat
 
-        # If temp_treatment is T4 or T5, finalize immediately and decrement gender quota
+        # Rest of your logic unchanged
         if temp_treat == 4:
             key = gender_key_T4
             if not decrement_quota(session, key):
-                # no quota after all -> screen out
                 player.accepted = 0
                 player.treatment = 0
             else:
                 player.treatment = 4
                 player.accepted = 1
                 player.participant.treatment = 4
+
         elif temp_treat == 5:
             key = gender_key_T5
             if not decrement_quota(session, key):
@@ -164,9 +167,9 @@ class PDetails(Page):
                 player.treatment = 5
                 player.accepted = 1
                 player.participant.treatment = 5
+
         else:
-            # T1–T3: treatment only finalized after KK (painting choice).
-            player.accepted = 1  # still “in” for now
+            player.accepted = 1
 
     @staticmethod
     def vars_for_template(player: Player):

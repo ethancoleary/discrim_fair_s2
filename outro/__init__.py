@@ -522,7 +522,7 @@ class Invest_Other_Budget300(Page):
 
     @staticmethod
     def is_displayed(player):
-        return player.participant.receive == 0
+        return player.participant.chosen == 0
 
     @staticmethod
     def vars_for_template(self):
@@ -543,7 +543,7 @@ class Invest_Other_Budget100(Page):
 
     @staticmethod
     def is_displayed(player):
-        return player.participant.receive == 1
+        return player.participant.chosen == 1
 
     @staticmethod
     def vars_for_template(self):
@@ -566,7 +566,7 @@ class Invest_Ch(Page):
     def vars_for_template(player):
         participant = player.participant
 
-        if participant.receive == 1:
+        if participant.chosen == 1:
             budget = 300
             otherbudget = 100
         else:
@@ -596,7 +596,7 @@ class Invest_Match_Budget300(Page):
 
     @staticmethod
     def is_displayed(player):
-        return player.participant.receive == 0
+        return player.participant.chosen == 0
 
     @staticmethod
     def vars_for_template(self):
@@ -617,7 +617,7 @@ class Invest_Match_Budget100(Page):
 
     @staticmethod
     def is_displayed(player):
-        return player.participant.receive == 1
+        return player.participant.chosen == 1
 
     @staticmethod
     def vars_for_template(self):
@@ -674,14 +674,14 @@ class Results(Page):
         inv = participant.investment
         die = participant.die
 
-        if participant.receive == 1:
+        if participant.chosen == 1:
             kept = 300 - participant.investment
         else:
             kept = 100 - participant.investment
 
         if die < 3:
             player.lottery = 1
-            earning = math.ceil(2.5 * inv) + kept
+            earning = math.ceil(3.5 * inv) + kept
             player.earning = earning
         else:
             player.lottery = 0
@@ -693,9 +693,9 @@ class Results(Page):
         else:
             bonus = f"{earning / 100}"
 
-        if participant.receive == 1:
+        if participant.chosen == 1:
             participation_fee = 0
-        elif participant.receive == 0:
+        elif participant.chosen == 0:
             if participant.steal == 1:
                 participation_fee = 0.75
             else:
