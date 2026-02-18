@@ -141,9 +141,9 @@
   }
 </style>
 
-You have initially earned 200 tokens, each worth 1 cent.
-<br><br>
-You must decide how many of your tokens to invest in the following lottery.
+You have been given an investment budget of 200 tokens, each worth 1 cent.
+Your task is to choose the portion of this budget that you wish to invest in a lottery.
+The amount not invested is yours to keep.
 <br><br>
 
 <center>
@@ -153,21 +153,35 @@ You must decide how many of your tokens to invest in the following lottery.
         1/3 chance you will earn two and a half times the amount you invest.</i>
 </div>
 </center>
-
-To determine whether you win or lose in the lottery, the computer will randomly pick a number: 1, 2 or 3,
-each with an equal probability.
-Thus, if you decide to invest X tokens in the lottery:<br><br>
+Thus, your total bonus payment could be:<br><br>
 <ul>
-    <li>If the number picked is 1, your <b>earnings from the lottery</b> will be equal to 2.5X tokens.</li>
-    <li>If the number picked is 2 or 3, your <b>earnings from the lottery</b> will be equal to -X tokens.</li>
+    <li>Your <b>initial 200 tokens plus 2.5 times your investment</b> with a 1/3 chance.</li>
+    <li>Your <b>initial 200 tokens minus your investment</b> with a 2/3 chance.</li>
 </ul>
-Your <b>total earnings</b> are equal to your initial 200 tokens (your starting amount)
-plus your <b>earnings from the lottery</b> (either -X or 2.5X tokens depending on the number picked by the computer).
-
+You may use the tool below to explore the possible earnings and their probabilities from different investment amounts.
 <br><br>
+
+<center>
+<div id="sliderContainer">
+  <label for="investmentSlider"><i>Select your investment amount (0 to 200):</i></label>
+
+  <input type="range" id="investmentSlider" min="0" max="200" value="0" step="1" oninput="updateDisplay(value)">
+
+  <!-- Hidden form field to record the slider value -->
+  <input type="hidden" name="slider_value" id="sliderValueField" value="0">
+
+  <div id="sliderText">
+    If you invest <span id="sliderValue" style="font-size: 22px; font-weight: bold; color: #2c5aa0;"></span> tokens
+    in the project, you could earn
+    <span id="totalHigh" style="font-size: 22px; font-weight: bold; color: #2c5aa0;"></span> tokens with <span style="font-size: 22px; font-weight: bold; color: #2c5aa0;">2/6</span> probability (success)
+    and <span id="totalLow" style="font-size: 22px; font-weight: bold; color: #2c5aa0;"></span> tokens with <span style="font-size: 22px; font-weight: bold; color: #2c5aa0;">4/6</span> probability (failure).
+  </div>
+</div>
+</center>
 In the next page you must decide how many of your tokens to invest.
 <br><br>
     {{ next_button }}
+
 
 <script type="text/javascript">
 var sliderMoved = false;
@@ -175,36 +189,35 @@ var sliderMoved = false;
 function updateDisplay(x) {
   var xInt = parseInt(x, 10);
 
-  // Update the hidden form field to record the slider value
   document.getElementById('sliderValueField').value = xInt;
 
-  // Show the slider text only after the slider has been moved
   if (!sliderMoved) {
     sliderMoved = true;
     document.getElementById('sliderText').style.display = 'block';
   }
 
   document.getElementById('sliderValue').textContent = xInt;
-  document.getElementById('investX').textContent = xInt;
 
-  // Calculate values - round up using Math.ceil for any decimal results
-  var lotteryHigh = Math.ceil(2.5 * xInt);
-  var lotteryLow = -1 * xInt; // Always 0 for Case 2
-  var totalHigh = 200 + lotteryHigh
-  var totalLow = 200 + lotteryLow
+  var lotteryHigh = Math.ceil(3.5 * xInt);
+  var lotteryLow = 0;
+  var uninv = 200 - xInt;
+  var totalHigh = Math.ceil(uninv + 3.5 * xInt);
+  var totalLow = uninv;
 
-  // Update slider container text
-  document.getElementById('totalbonusHigh').textContent = totalHigh;
-  document.getElementById('totalbonusLow').textContent = totalLow;
+  // update the spans under the slider
+  document.getElementById('totalHigh').textContent = totalHigh;
+  document.getElementById('totalLow').textContent = totalLow;
 
-  // Update table cells
-  document.getElementById('lotteryEarnHigh').textContent = lotteryHigh;
-  document.getElementById('lotteryEarnLow').textContent = lotteryLow;
-  document.getElementById('uninvLeft1').textContent = uninv;
-  document.getElementById('uninvLeft2').textContent = uninv;
-  document.getElementById('totalBonusHigh').textContent = totalHigh;
-  document.getElementById('totalBonusLow').textContent = totalLow;
+  // if you actually have these elements in a table, keep these lines;
+  // otherwise remove them to avoid errors
+  // document.getElementById('lotteryEarnHigh').textContent = lotteryHigh;
+  // document.getElementById('lotteryEarnLow').textContent = lotteryLow;
+  // document.getElementById('uninvLeft1').textContent = uninv;
+  // document.getElementById('uninvLeft2').textContent = uninv;
+  // document.getElementById('totalBonusHigh').textContent = totalHigh;
+  // document.getElementById('totalBonusLow').textContent = totalLow;
 }
+
 
 // Toggle dropdown visibility
 function toggleDropdown() {
@@ -225,5 +238,6 @@ window.onload = function() {
   // Leave slider text hidden until moved
 }
 </script>
+
 
 {{ endblock }}

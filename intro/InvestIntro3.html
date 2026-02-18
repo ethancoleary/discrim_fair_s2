@@ -149,33 +149,67 @@ The project is either a success or a failure.
 To determine the outcome of the project, the computer will virtually roll a six-sided die.
 <br><br>
 <table style="width:100%; border-collapse:collapse;">
-  <tr>
-    <td style="width:33%; vertical-align:top;">
-      Die result:<br>
-      <img src="_static/global/success.png" alt="Success" style="max-width:100%; height:auto;"><br>
-      (probability 2/6)
-    </td>
-    <td style="width:67%; vertical-align:top;">
-      Your project is successful.<br>
-        You gain 2.5 times your investment. <br>
-        Your total payment is 200 plus 2.5 times your investment.
+     <tr>
+    <td colspan="2" style="border-top:1px solid #000; padding-top:10px; padding-bottom:10px;">
     </td>
   </tr>
   <tr>
-     <td style="width:33%; vertical-align:top;">
-      Die result:<br>
-      <img src="_static/global/failure.png" alt="Success" style="max-width:100%; height:auto;"><br>
-      (probability 4/6)
+    <td style="width:50%; vertical-align:top;">
+      <b>Die result:</b> (probability 2/6) <br>
+      <img src="{{ static 'global/success.png' }}" alt="Success" style="max-width:30%; height:auto;"><br>
+        <br>
     </td>
-    <td style="width:67%; vertical-align:top;">
-      Your project is a failure.<br>
-        You lose your investment. <br>
-        Your total payment is 200 minus your investment.
+    <td style="width:50%; vertical-align:top;">
+      Your project is <b>successful</b>.<br>
+      You gain 2.5 times your investment. <br>
+      Your total bonus payment is <b>200 plus 2.5 times your investment</b>.
+    </td>
+  </tr>
+
+  <!-- Spacer row with horizontal line -->
+  <tr>
+    <td colspan="2" style="border-top:1px solid #000; padding-top:10px; padding-bottom:10px;">
+    </td>
+  </tr>
+
+  <tr>
+    <td style="width:50%; vertical-align:top;">
+      <b>Die result:</b> (probability 4/6)<br>
+      <img src="{{ static 'global/failure.png' }}" alt="Failure" style="max-width:60%; height:auto;"><br><br>
+
+    </td>
+    <td style="width:50%; vertical-align:top;">
+      Your project is a <b>failure</b>.<br>
+      You lose your investment. <br>
+      Your total bonus payment is <b>200 minus your investment</b>.
+    </td>
+  </tr>
+     <tr>
+    <td colspan="2" style="border-top:1px solid #000; padding-top:10px; padding-bottom:10px;">
     </td>
   </tr>
 </table>
 
+You may use the tool below to explore the possible earnings and their probabilities from different investment amounts.
 <br><br>
+
+<center>
+<div id="sliderContainer">
+  <label for="investmentSlider"><i>Select your investment amount (0 to 200):</i></label>
+
+  <input type="range" id="investmentSlider" min="0" max="200" value="0" step="1" oninput="updateDisplay(value)">
+
+  <!-- Hidden form field to record the slider value -->
+  <input type="hidden" name="slider_value" id="sliderValueField" value="0">
+
+  <div id="sliderText">
+    If you invest <span id="sliderValue" style="font-size: 22px; font-weight: bold; color: #2c5aa0;"></span> tokens
+    in the project, you could earn
+    <span id="totalHigh" style="font-size: 22px; font-weight: bold; color: #2c5aa0;"></span> tokens with <span style="font-size: 22px; font-weight: bold; color: #2c5aa0;">2/6</span> probability
+    and <span id="totalLow" style="font-size: 22px; font-weight: bold; color: #2c5aa0;"></span> tokens with <span style="font-size: 22px; font-weight: bold; color: #2c5aa0;">4/6</span> probability.
+  </div>
+</div>
+</center>
 In the next page you must decide how many of your tokens to invest.
 <br><br>
     {{ next_button }}
@@ -186,36 +220,35 @@ var sliderMoved = false;
 function updateDisplay(x) {
   var xInt = parseInt(x, 10);
 
-  // Update the hidden form field to record the slider value
   document.getElementById('sliderValueField').value = xInt;
 
-  // Show the slider text only after the slider has been moved
   if (!sliderMoved) {
     sliderMoved = true;
     document.getElementById('sliderText').style.display = 'block';
   }
 
   document.getElementById('sliderValue').textContent = xInt;
-  document.getElementById('investX').textContent = xInt;
 
-  // Calculate values - round up using Math.ceil for any decimal results
-  var lotteryHigh = Math.ceil(2.5 * xInt);
-  var lotteryLow = -1 * xInt; // Always 0 for Case 2
-  var totalHigh = 200 + lotteryHigh
-  var totalLow = 200 + lotteryLow
+  var lotteryHigh = Math.ceil(3.5 * xInt);
+  var lotteryLow = 0;
+  var uninv = 200 - xInt;
+  var totalHigh = Math.ceil(uninv + 3.5 * xInt);
+  var totalLow = uninv;
 
-  // Update slider container text
-  document.getElementById('totalbonusHigh').textContent = totalHigh;
-  document.getElementById('totalbonusLow').textContent = totalLow;
+  // update the spans under the slider
+  document.getElementById('totalHigh').textContent = totalHigh;
+  document.getElementById('totalLow').textContent = totalLow;
 
-  // Update table cells
-  document.getElementById('lotteryEarnHigh').textContent = lotteryHigh;
-  document.getElementById('lotteryEarnLow').textContent = lotteryLow;
-  document.getElementById('uninvLeft1').textContent = uninv;
-  document.getElementById('uninvLeft2').textContent = uninv;
-  document.getElementById('totalBonusHigh').textContent = totalHigh;
-  document.getElementById('totalBonusLow').textContent = totalLow;
+  // if you actually have these elements in a table, keep these lines;
+  // otherwise remove them to avoid errors
+  // document.getElementById('lotteryEarnHigh').textContent = lotteryHigh;
+  // document.getElementById('lotteryEarnLow').textContent = lotteryLow;
+  // document.getElementById('uninvLeft1').textContent = uninv;
+  // document.getElementById('uninvLeft2').textContent = uninv;
+  // document.getElementById('totalBonusHigh').textContent = totalHigh;
+  // document.getElementById('totalBonusLow').textContent = totalLow;
 }
+
 
 // Toggle dropdown visibility
 function toggleDropdown() {
@@ -236,5 +269,6 @@ window.onload = function() {
   // Leave slider text hidden until moved
 }
 </script>
+
 
 {{ endblock }}

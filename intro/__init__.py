@@ -331,8 +331,9 @@ page_sequence = [
                 PDetails,
                 KK,
                 #InvestIntro,
-                #InvestIntro2,
+
                 InvestIntro3,
+InvestIntro2,
                 Invest,
                 Screen,
                 Results,
