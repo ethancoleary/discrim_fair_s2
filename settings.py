@@ -12,9 +12,9 @@ SESSION_CONFIGS = [
 completionlinkfull  =
        'https://app.prolific.com/submissions/complete?cc=CHXPJ2PR',
 completionlinkscreenout_invest =
-        'https://app.prolific.com/submissions/complete?cc=CE0YPA75',
+        'https://app.prolific.com/submissions/complete?cc=CHXPJ2PR',
 completionlinkscreenout  =
-       'https://app.prolific.com/submissions/complete?cc=CE0YPA75',
+       'https://app.prolific.com/submissions/complete?cc=CHXPJ2PR',
     )
 ]
 

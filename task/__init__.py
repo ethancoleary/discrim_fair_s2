@@ -24,7 +24,7 @@ class Group(BaseGroup):
 def check3_choices(player):
     # Base text for options 2 and 3 is the same for all treatments
     option2 = 'According to who belongs to the group which, on average, invested more in a previous study.'
-    option3 = 'According to a real participant with past group data on investment who wishes to maximize their commission from investments.'
+    option3 = 'According to a real participant with past group data on investment who has an incentive to maximise their commission from investments made.'
 
     if player.participant.treatment < 4:
         option1 = 'According to who selected a randomly chosen painting.'

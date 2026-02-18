@@ -13,19 +13,13 @@ This means that your investment {{ if player.lottery == 0 }} was lost. {{ endif 
 {{ if player.lottery == 1 }} will deliver 2.5 times {{ player.invest }}. {{ endif }}
     </p>
 <p>
-Therefore, your final token balance is equal to {{ player.earnings }} meaning you will
+Therefore, your final token balance is equal to {{ earning }} meaning you will
 receive a bonus payment equal to ${{ bonus }}. You will receive this within one week.
     </p>
 
-You will now be redirected automatically redirected to Prolific.
-
-<script>
-    let completionlink = js_vars.completionlinkscreenout;
-
-    window.onload = function(){
-        window.location.href=completionlink;
-    }
-</script>
+Click on next to be redirected to Prolific.
+<br><br>
+    {{ next_button }}
 
 
 {{ endblock }}

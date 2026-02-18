@@ -2,6 +2,7 @@ from otree.api import *
 import random
 import copy
 from common import *
+import math
 
 doc = """
 Stage 1 Pilot
@@ -50,7 +51,7 @@ class Player(BasePlayer):
         ],
         widget=widgets.RadioSelect
     )
-    age = models.IntegerField(min=0, max=100)
+    age = models.IntegerField(min=18, max=100)
     KK = models.IntegerField(
         choices=[
             [1, 'Klee'],
@@ -62,7 +63,7 @@ class Player(BasePlayer):
     temp_treatment = models.IntegerField(initial=0)
     die = models.IntegerField()
     invest = models.IntegerField()
-    earnings = models.IntegerField()
+    earnings = models.FloatField()
     lottery = models.IntegerField()
 
     blur_log = models.LongStringField(blank=True)
@@ -237,6 +238,12 @@ class InvestIntro(Page):
     def is_displayed(player):
         return player.accepted == 0 and player.gender > 2
 
+class InvestIntro2(Page):
+
+    @staticmethod
+    def is_displayed(player):
+        return player.accepted == 0 and player.gender > 2
+
 class Invest(Page):
     form_model = 'player'
     form_fields = ['invest']
@@ -268,14 +275,17 @@ class Results(Page):
     @staticmethod
     def vars_for_template(player):
         kept = 200 - player.invest
-        if player.earnings % 10 == 0:
-            bonus = f"{player.earnings / 100}0"
+        earning = math.ceil(player.earnings)
+
+        if earning% 10 == 0:
+            bonus = f"{earning / 100}0"
         else:
-            bonus = f"{player.earnings / 100}"
+            bonus = f"{earning / 100}"
 
         return {
             'kept': kept,
-            'bonus': bonus
+            'bonus': bonus,
+            'earning': earning
         }
 
 
@@ -314,7 +324,8 @@ page_sequence = [
                 Intro,
                 PDetails,
                 KK,
-                InvestIntro,
+                #InvestIntro,
+                InvestIntro2,
                 Invest,
                 Screen,
                 Results,
