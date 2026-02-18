@@ -244,6 +244,12 @@ class InvestIntro2(Page):
     def is_displayed(player):
         return player.accepted == 0 and player.gender > 2
 
+class InvestIntro3(Page):
+
+    @staticmethod
+    def is_displayed(player):
+        return player.accepted == 0 and player.gender > 2
+
 class Invest(Page):
     form_model = 'player'
     form_fields = ['invest']
@@ -325,7 +331,8 @@ page_sequence = [
                 PDetails,
                 KK,
                 #InvestIntro,
-                InvestIntro2,
+                #InvestIntro2,
+                InvestIntro3,
                 Invest,
                 Screen,
                 Results,
